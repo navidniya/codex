@@ -1,0 +1,157 @@
+{
+  "company": {
+    "name": "Clara Analysis Team",
+    "mission": "Analyze, review, and improve the Clara project through coordinated AI agent workflows",
+    "governance": {
+      "boardApprovalRequired": ["strategy_change", "agent_termination", "budget_increase"],
+      "auditLogging": true
+    }
+  },
+  "agents": [
+    {
+      "id": "clara-lead",
+      "title": "Lead Architect",
+      "role": "CEO",
+      "reportsTo": null,
+      "responsibilities": [
+        "Review overall Clara project architecture",
+        "Prioritize analysis tasks across the team",
+        "Coordinate findings from all agents into actionable insights",
+        "Make strategic decisions about refactoring priorities"
+      ],
+      "adapterConfig": {
+        "adapter": "claude_local",
+        "model": "claude-sonnet-4-20250514",
+        "billingType": "api",
+        "sessionBehavior": "resume-or-new",
+        "heartbeatSchedule": {
+          "enabled": true,
+          "intervalSec": 1800
+        }
+      },
+      "budget": {
+        "monthlyLimitUsd": 50
+      }
+    },
+    {
+      "id": "clara-code-reviewer",
+      "title": "Code Reviewer",
+      "role": "Engineer",
+      "reportsTo": "clara-lead",
+      "responsibilities": [
+        "Review Clara source code for quality and best practices",
+        "Identify code smells, anti-patterns, and technical debt",
+        "Suggest refactoring opportunities",
+        "Check for consistent coding style and conventions"
+      ],
+      "adapterConfig": {
+        "adapter": "claude_local",
+        "model": "claude-sonnet-4-20250514",
+        "billingType": "api",
+        "sessionBehavior": "resume-or-new",
+        "heartbeatSchedule": {
+          "enabled": true,
+          "intervalSec": 3600
+        }
+      },
+      "budget": {
+        "monthlyLimitUsd": 30
+      }
+    },
+    {
+      "id": "clara-qa",
+      "title": "QA Analyst",
+      "role": "QA",
+      "reportsTo": "clara-lead",
+      "responsibilities": [
+        "Analyze test coverage across the Clara project",
+        "Identify untested edge cases and missing test scenarios",
+        "Review existing tests for correctness and completeness",
+        "Propose test improvements and new test cases"
+      ],
+      "adapterConfig": {
+        "adapter": "claude_local",
+        "model": "claude-sonnet-4-20250514",
+        "billingType": "api",
+        "sessionBehavior": "resume-or-new",
+        "heartbeatSchedule": {
+          "enabled": true,
+          "intervalSec": 3600
+        }
+      },
+      "budget": {
+        "monthlyLimitUsd": 25
+      }
+    },
+    {
+      "id": "clara-security",
+      "title": "Security Auditor",
+      "role": "Engineer",
+      "reportsTo": "clara-lead",
+      "responsibilities": [
+        "Scan Clara codebase for security vulnerabilities",
+        "Check for OWASP Top 10 issues",
+        "Review dependency security and known CVEs",
+        "Assess authentication, authorization, and data handling"
+      ],
+      "adapterConfig": {
+        "adapter": "claude_local",
+        "model": "claude-sonnet-4-20250514",
+        "billingType": "api",
+        "sessionBehavior": "resume-or-new",
+        "heartbeatSchedule": {
+          "enabled": true,
+          "intervalSec": 7200
+        }
+      },
+      "budget": {
+        "monthlyLimitUsd": 20
+      }
+    },
+    {
+      "id": "clara-docs",
+      "title": "Documentation Analyst",
+      "role": "Content Strategist",
+      "reportsTo": "clara-lead",
+      "responsibilities": [
+        "Audit Clara project documentation completeness",
+        "Identify undocumented APIs, functions, and modules",
+        "Review README and onboarding documentation",
+        "Suggest documentation improvements and missing guides"
+      ],
+      "adapterConfig": {
+        "adapter": "claude_local",
+        "model": "claude-sonnet-4-20250514",
+        "billingType": "api",
+        "sessionBehavior": "resume-or-new",
+        "heartbeatSchedule": {
+          "enabled": true,
+          "intervalSec": 7200
+        }
+      },
+      "budget": {
+        "monthlyLimitUsd": 15
+      }
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal-1",
+      "title": "Complete Clara Code Analysis",
+      "description": "Perform a comprehensive analysis of the Clara project covering architecture, code quality, security, testing, and documentation",
+      "subgoals": [
+        "Identify architectural strengths and weaknesses",
+        "Catalog all technical debt and code quality issues",
+        "Produce a security audit report",
+        "Map test coverage gaps",
+        "Create documentation improvement plan"
+      ]
+    }
+  ],
+  "settings": {
+    "multiCompany": false,
+    "dashboardPort": 3100,
+    "costTracking": true,
+    "traceAllToolCalls": true
+  }
+}
