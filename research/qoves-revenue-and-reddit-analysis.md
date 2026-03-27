@@ -11,7 +11,7 @@
 | Revenue Stream | Estimated Amount |
 |---|---|
 | **Total Estimated Annual Income (all platforms)** | **$2.87M - $3.61M** |
-| YouTube AdSense (monthly) | ~$8,400/month (~$100K/year) |
+| YouTube AdSense (monthly) | ~$9,460/month (~$113.5K/year) |
 | YouTube AdSense (per million views) | $4K - $5K |
 | Total Audience (Instagram, TikTok, YouTube) | 2,577,596 users |
 | Community Size | 2M+ followers worldwide |
@@ -29,17 +29,33 @@
 ### Company Structure
 
 - **Founders:** Shafee Hassan (Co-Founder & CTO, 55% stake) and Leo Olsen Guillot (CEO)
-- **Employees:** Small team (~3 directors listed)
+- **Employees:** 11-50 (LinkedIn) / 1-10 (ZoomInfo) — likely small team
 - **Legal Entity:** Qoves Limited
 
 ### Pricing & Business Model
 
+**Current Model:**
+
 | Offering | Price |
 |---|---|
-| **Annual Subscription** | **$150/year** |
-| Basic Tier (historical) | ~$75-$100 |
-| Standard Tier | ~$150 |
-| Premium/Tertiary Report (historical) | ~$250-$300 |
+| **Annual Subscription (current)** | **$150/year** |
+
+**Historical/Legacy One-Time Reports (now replaced by subscription):**
+
+| Offering | Price |
+|---|---|
+| Facial Morph Report | $100 |
+| Preliminary Aesthetics Report | $150 |
+| Tertiary Aesthetics Report | $250 |
+| Comprehensive Aesthetics Report | $300 |
+| Essential Lookbook | $250 |
+| Premium Lookbook | $400 |
+
+**Founder Consulting:**
+
+| Offering | Price |
+|---|---|
+| 1:1 video consultation with Shafee Hassan (via Intro.co) | $250/session |
 
 **What's included in the $150/year subscription:**
 - Complete facial analysis (100+ aesthetic parameters)
@@ -68,10 +84,11 @@
 
 ### YouTube Stats
 
-- **Subscribers:** ~900,000
-- **Total Views:** 230M+
-- **Videos Published:** 580+ (330+ in last 2 years)
+- **Subscribers:** ~988,000 (approaching 1M milestone)
+- **Total Views:** 310M+
+- **Videos Published:** 684+ (330+ in last 2 years)
 - **Monthly Views:** ~11.92M
+- **Growth Rate:** ~10K new subscribers/month
 
 ### Revenue Estimate Summary
 
@@ -83,15 +100,35 @@ If we assume even a modest conversion rate on 92.5K monthly visitors at $150/yea
 
 ## Part 2: Reddit & Community Sentiment Analysis
 
-> Note: Reddit.com is blocked from direct crawling, so this analysis draws from Reddit-referenced discussions on Trustpilot, Looksmax forums, Medium reviews, TikTok, and other platforms that aggregate Reddit sentiment.
+> Note: Reddit.com is blocked from direct crawling, so this analysis draws from the r/QOVESStudio subreddit data (via GummySearch), Trustpilot reviews (263 reviews across 6+ pages), Looksmax forums, Looksmaxxing Forum, Medium reviews, TikTok, Fishbowl, and other platforms that aggregate community sentiment.
+
+### r/QOVESStudio Subreddit Overview
+
+- **Members:** 34,000+
+- **Activity:** High engagement, large community
+- **Description:** "A community dedicated to the sciences of beauty" with "rational, evidence-based discussions"
+- **Also runs:** Discord server for extended community engagement
+- **Cross-pollination:** Users from r/Vindicta, r/Splendida, r/HowtobeHot, and mewing subreddits also frequent r/QOVESStudio
+- **Perception:** Described as "literally the only useful looksmaxxing channel besides real medical specialists in the field"
 
 ### Overall Ratings
 
-| Platform | Rating |
-|---|---|
-| Trustpilot | 5/5 (256 reviews) |
-| Futurepedia | 4.1/5 |
-| AI Product Reviews | 4/5 |
+| Platform | Rating | Reviews |
+|---|---|---|
+| Trustpilot | 4.8/5 | 263 reviews |
+| Futurepedia | 4.1/5 | Editorial |
+| AI Product Reviews | 4/5 | Editorial |
+| ScamAdviser | Legit | Trust check |
+
+### Trustpilot Rating Distribution
+
+| Stars | Count | Percentage |
+|---|---|---|
+| 5 stars | 240 | 91% |
+| 4 stars | 5 | 2% |
+| 3 stars | 4 | 2% |
+| 2 stars | 3 | 1% |
+| 1 star | 11 | 4% |
 
 ---
 
@@ -162,6 +199,15 @@ If we assume even a modest conversion rate on 92.5K monthly visitors at $150/yea
 - Some reports just recommend basic things like "let your hair down and wear makeup"
 - One reviewer: "The quality was unacceptable given the price"
 - "Recommendations were superficial" - didn't go deep enough for already knowledgeable users
+- Trustpilot reviewer: "report felt surprisingly generic and lacked the level of depth and personalization I expected"
+- "Suggestions were quite broad and similar to information that can already be found online"
+
+#### 4b. AI Visualization Quality Issues
+- One reviewer called it "AI slop" - "paid $200+ for AI slop"
+- After photo "doesn't even look like the same race" and was "significantly uglier" than real appearance
+- Suggested hairstyles and fixes described as "laughably low quality"
+- Digital face reconstruction appeared from "a rather low-quality artificial intelligence system, with an outcome that looked inaccurate and unprofessional"
+- One customer suspected "most positive reviews are bots"
 
 #### 5. Focus on "Ideal Metrics" vs. Maximizing Individual Features
 - Critics argue QOVES tries to push everyone toward the same "ideal" rather than helping people "maximize what they have"
@@ -216,6 +262,80 @@ If we assume even a modest conversion rate on 92.5K monthly visitors at $150/yea
 
 ---
 
+### REDDIT & FORUM COMMUNITY DEEP DIVE
+
+#### r/QOVESStudio (34K members)
+- **Fans use it as a hub** for discussing facial aesthetics, analyzing celebrity faces, and sharing their own QOVES reports
+- Users appreciate the "rational, evidence-based" community guidelines
+- Common posts: face rating requests, discussion of QOVES YouTube videos, sharing report results, asking about specific facial features
+- Cross-referenced with mewing and looksmaxxing subreddits
+
+#### Looksmaxxing Forum Sentiment
+- QOVES is recognized as a top-tier creator: "I love QOVES" - "their subreddit is great"
+- But price sensitivity is real: "$150 was too much, I'll stick to reddit and YT"
+- Users who purchased the Tertiary Report said it "wasn't life changing" but found "some very good points in it"
+- The analyst was praised as "very knowledgeable on facial attractiveness" with "impressive knowledge of harmony"
+- Report covered "many important ratios that are overlooked on this forum"
+- Some were bluntly dismissive, calling the service "dogshit"
+- Others found it "might be worth spending $150 just to not feel like plastic surgery research has to be a kind of forbidden dark net scary exploration"
+
+#### Looksmax Body Dysmorphia Thread
+- Thread titled "Qoves Studio is making an entire gen body dysmorphic" gained traction
+- Argument: by quantifying facial flaws to millions of young viewers, QOVES normalizes obsessive self-analysis
+- Counter-argument: QOVES simply provides information people would seek anyway, and it's better to get it from a structured source
+
+#### Related Reddit Communities Where QOVES is Discussed
+- **r/Vindicta** - Female looksmaxxing subreddit; users reference QOVES videos for hardmaxxing research
+- **r/Splendida** - Similar to Vindicta; QOVES mentioned as a top resource
+- **r/HowtobeHot** - Users cite QOVES analysis framework
+- **r/PlasticSurgery** - QOVES referenced in discussions about pre-consultation research
+- **r/mewing** - Overlap with QOVES community; users from mewing subreddit post in r/QOVESStudio
+
+#### Fishbowl App Discussion
+- Post titled "Thanks to the Qoves YouTube channel I've discovered that I'm ugly according to science"
+- Illustrates the emotional impact of QOVES content - users discovering perceived flaws they didn't know they had
+- Mixed reactions between empowerment and distress
+
+#### Key Reddit/Forum Quotes
+- "QOVES is literally the only useful looksmaxxing channel besides real medical specialists"
+- "I love QOVES but people on here made me feel insane because nobody knew much about them"
+- "If you are resourceful and smart and know who to trust/listen you can get the same info independently"
+- "It costs $150... I'll stick to reddit and YT"
+- "Oh I love QOVES, their subreddit is great!"
+- "The first report was underwhelming" but the follow-up was "more insightful"
+
+---
+
+### DETAILED TRUSTPILOT REVIEW ANALYSIS (263 Reviews, 6+ Pages)
+
+#### Standout Positive Reviews
+- **Tati:** "Super Detailed Report In a Timely Fashion"
+- **Drew K:** Found suggestions "surprisingly detailed with practical, actionable suggestions rather than abstract advice"
+- **popi vassilaki:** "The analysis is so precise, that you can see yourself in another way"
+- **tucan:** "Qoves helped me gain confidence that I didn't have before"
+- **Kim:** "Qoves explanation of my features actually made me feel better about myself"
+- **Mo Ibrahim:** Praised team responsiveness - they revised the report to satisfaction
+- **Eric Tjahyadi:** Appreciated "layered data analysis and post-review improvement protocols"
+- **Az Hhh:** "Really thoughtful and precise in letting you know how to improve femininity, masculinity, or symmetry"
+
+#### Standout Negative Reviews
+- **LS (1 star):** "Highly disappointing" - submitted bare-faced photos per instructions, told to wear makeup
+- **Isamar Sanchez (2 stars):** "Report felt surprisingly generic" - suggestions were "broad and similar to information already online"
+- **Anonymous (1 star):** "Genuinely awful" - "paid $200+ for AI slop" - after photo "doesn't even look like the same race"
+- **Anonymous (1 star):** Waited over a month, report was "extremely disappointing" - "money wasted"
+- **Anonymous:** "First report was underwhelming" though follow-up improved
+
+#### Emerging Themes from 263 Reviews
+1. **Confidence boost** - Multiple reviewers say QOVES made them feel better about themselves (not worse)
+2. **Speed varies wildly** - Some got results in 5 days, others waited 4+ weeks
+3. **Report quality inconsistency** - Some get incredibly detailed reports, others get generic ones
+4. **Support is responsive** - Multiple mentions of team revising reports when customers complained
+5. **Makeup analysis gap** - Several users wanted makeup-specific recommendations
+6. **Some features behind paywall** - Even after paying $150, some report elements require additional payment
+7. **Botox/filler recommendations** - Some users surprised to receive injectable recommendations (positive and negative reactions)
+
+---
+
 ### WHAT USERS WANT IMPROVED
 
 1. **Surgical guidance** - Specific procedure recommendations, not just analysis
@@ -225,14 +345,18 @@ If we assume even a modest conversion rate on 92.5K monthly visitors at $150/yea
 5. **Tiered depth** - More detailed reports for advanced users who already know the basics
 6. **Lower price point** - A lighter/cheaper entry option for casual users
 7. **Integration with health protocols** - Connect facial aesthetics with broader wellness plans
+8. **Makeup analysis** - Dedicated section for makeup recommendations based on facial structure
+9. **Consistent report quality** - Address the gap between best and worst reports
+10. **Better AI visualization** - Improve Remorph engine output quality and racial accuracy
+11. **Transparency on data privacy** - Clear policies on facial photo storage and usage
 
 ---
 
 ## Summary
 
-**Revenue:** QOVES is estimated to generate **$2.87M - $3.61M annually** across all revenue streams, with the primary driver being their $150/year subscription service, supplemented by ~$100K/year in YouTube ad revenue and sponsorship income. They've raised $750K in venture funding.
+**Revenue:** QOVES is estimated to generate **$2.87M - $3.61M annually** across all revenue streams. Primary driver is the $150/year subscription service, supplemented by ~$113.5K/year in YouTube ad revenue, founder consulting at $250/session, and sponsorship income. They've raised $750K in venture funding from HotStart VC and Share Ventures. They transitioned from expensive one-time reports ($100-$400) to a recurring $150/year membership model, indicating a shift toward scalable recurring revenue.
 
-**Sentiment:** Community reception is **polarized but net-positive**. Trustpilot shows 5/5 stars across 256 reviews. The detailed analysis, scientific approach, and visualization technology are widely praised. Main complaints center on price-to-value ratio, lack of surgical recommendations, delivery delays, and philosophical concerns about reducing beauty to metrics. The YouTube channel is broadly respected for educational content but criticized for potentially triggering body dysmorphia and monetizing insecurity.
+**Sentiment:** Community reception is **polarized but net-positive**. Trustpilot shows 4.8/5 stars across 263 reviews (91% five-star, 4% one-star). The r/QOVESStudio subreddit has 34K members with high activity. The detailed analysis, scientific approach, and visualization technology are widely praised. Main complaints center on price-to-value ratio, inconsistent report quality, AI visualization accuracy issues, lack of surgical recommendations, delivery delays, and philosophical concerns about reducing beauty to metrics. The YouTube channel (988K subscribers, 310M+ views) is broadly respected for educational content but criticized for potentially triggering body dysmorphia and monetizing insecurity. The looksmaxxing community is split between seeing QOVES as an essential resource and viewing it as overpriced for information available freely online.
 
 ---
 
@@ -259,3 +383,15 @@ If we assume even a modest conversion rate on 92.5K monthly visitors at $150/yea
 - [Alex Costin - Shafee Hassan Profile](https://alexcostin.com/shafee-hassan)
 - [SimilarWeb - qoves.com](https://www.similarweb.com/website/qoves.com)
 - [Yahoo Lifestyle - Facial Analysis Obsession](https://www.yahoo.com/lifestyle/people-paying-facial-analysis-online-130301824.html)
+- [Looksmax - QOVES Body Dysmorphia Thread](https://looksmax.org/threads/qoves-studio-is-making-an-entire-gen-body-dismorphic.698427/)
+- [Looksmax - QOVES on Reddit Thread](https://looksmax.org/threads/qovesstudio-on-reddit-40-year-old-women-running-a-looks-rating-subreddit.1788975/)
+- [Looksmaxxing Forum - Creators Discussion](https://forum.looksmaxxing.com/threads/which-looksmaxxers-creators-in-general-do-you-follow.53024/)
+- [GummySearch - r/QOVESStudio Stats](https://gummysearch.com/r/QOVESStudio/)
+- [ScamAdviser - QOVES](https://www.scamadviser.com/check-website/qoves.com)
+- [Dazed - Incel Culture Mainstream](https://www.dazeddigital.com/life-culture/article/61666/1/rage-against-the-machine-how-incel-culture-went-mainstream-in-2023)
+- [Intro.co - Shafee Hassan Consulting](https://intro.co/ShafeeHassan)
+- [Trustpilot Page 2](https://www.trustpilot.com/review/qoves.com?page=2)
+- [Trustpilot Page 3](https://www.trustpilot.com/review/qoves.com?page=3)
+- [Trustpilot Page 4](https://www.trustpilot.com/review/qoves.com?page=4)
+- [Trustpilot Page 5](https://ca.trustpilot.com/review/qoves.com?page=5)
+- [Trustpilot Page 6](https://ie.trustpilot.com/review/qoves.com?page=6)
