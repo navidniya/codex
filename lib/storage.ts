@@ -18,7 +18,21 @@ export function loadState(): AppState {
 
 export function saveState(state: AppState): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(KEY, JSON.stringify(state));
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify(state));
+  } catch {
+    // Quota exceeded (lots of saved photos) or private-browsing throw.
+    // Retry once with image data dropped to keep the meal log alive.
+    try {
+      const stripped: AppState = {
+        profile: state.profile,
+        log: state.log.map(({ imageDataUrl: _, ...rest }) => rest),
+      };
+      window.localStorage.setItem(KEY, JSON.stringify(stripped));
+    } catch {
+      // Give up silently — UI state in memory still works for this session.
+    }
+  }
 }
 
 export function clearState(): void {

@@ -1,20 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { AppState, FoodItem, Profile } from "@/lib/types";
 import { loadState, saveState } from "@/lib/storage";
 import { Onboarding } from "@/components/Onboarding";
 import { Dashboard } from "@/components/Dashboard";
 
+type View = "dashboard" | "edit-profile";
+
 export default function Home() {
   const [state, setState] = useState<AppState | null>(null);
+  const [view, setView] = useState<View>("dashboard");
+  const hydrated = useRef(false);
 
   useEffect(() => {
     setState(loadState());
   }, []);
 
   useEffect(() => {
-    if (state) saveState(state);
+    if (!state) return;
+    if (!hydrated.current) {
+      hydrated.current = true;
+      return; // skip the initial save right after loadState()
+    }
+    saveState(state);
   }, [state]);
 
   if (!state) {
@@ -25,23 +34,26 @@ export default function Home() {
     );
   }
 
-  if (!state.profile) {
+  if (!state.profile || view === "edit-profile") {
     return (
       <Onboarding
-        onComplete={(profile: Profile) =>
-          setState({ profile, log: state.log })
-        }
+        initial={state.profile ?? undefined}
+        onCancel={state.profile ? () => setView("dashboard") : undefined}
+        onComplete={(profile: Profile) => {
+          setState((s) => ({ profile, log: s?.log ?? [] }));
+          setView("dashboard");
+        }}
       />
     );
   }
 
   const addItem = (item: FoodItem) =>
-    setState({ ...state, log: [item, ...state.log] });
+    setState((s) => (s ? { ...s, log: [item, ...s.log] } : s));
 
   const deleteItem = (id: string) =>
-    setState({ ...state, log: state.log.filter((i) => i.id !== id) });
-
-  const resetProfile = () => setState({ ...state, profile: null });
+    setState((s) =>
+      s ? { ...s, log: s.log.filter((i) => i.id !== id) } : s,
+    );
 
   return (
     <Dashboard
@@ -49,7 +61,7 @@ export default function Home() {
       log={state.log}
       onAdd={addItem}
       onDelete={deleteItem}
-      onResetProfile={resetProfile}
+      onEditProfile={() => setView("edit-profile")}
     />
   );
 }

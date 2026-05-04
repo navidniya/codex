@@ -26,3 +26,15 @@ html, body {
 * {
   border-color: var(--color-border);
 }
+
+/* iOS Safari zooms inputs whose computed font-size < 16px on focus.
+   Force every form control to >=16px regardless of Tailwind text-sm utilities. */
+input, textarea, select {
+  font-size: 16px;
+}
+
+/* Lock body scroll when a modal sets data-modal-open on <html>. */
+html[data-modal-open="1"] body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}

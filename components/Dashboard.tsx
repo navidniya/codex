@@ -12,10 +12,10 @@ interface Props {
   log: FoodItem[];
   onAdd: (item: FoodItem) => void;
   onDelete: (id: string) => void;
-  onResetProfile: () => void;
+  onEditProfile: () => void;
 }
 
-export function Dashboard({ profile, log, onAdd, onDelete, onResetProfile }: Props) {
+export function Dashboard({ profile, log, onAdd, onDelete, onEditProfile }: Props) {
   const [open, setOpen] = useState(false);
   const targets = useMemo(() => computeTargets(profile), [profile]);
   const todays = useMemo(() => log.filter((i) => isToday(i.loggedAt)), [log]);
@@ -24,7 +24,10 @@ export function Dashboard({ profile, log, onAdd, onDelete, onResetProfile }: Pro
   const remaining = Math.max(0, targets.calories - totals.calories);
 
   return (
-    <div className="mx-auto flex min-h-svh max-w-md flex-col gap-6 p-6 pb-32">
+    <div
+      className="mx-auto flex min-h-svh max-w-md flex-col gap-6 p-6"
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 8rem)" }}
+    >
       <header className="flex items-center justify-between pt-2">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Today</h1>
@@ -38,8 +41,8 @@ export function Dashboard({ profile, log, onAdd, onDelete, onResetProfile }: Pro
         </div>
         <button
           type="button"
-          onClick={onResetProfile}
-          className="rounded-full bg-(--color-surface) px-3 py-1.5 text-xs text-(--color-muted)"
+          onClick={onEditProfile}
+          className="rounded-full bg-(--color-surface) px-4 py-2.5 text-xs text-(--color-muted)"
         >
           Edit profile
         </button>
@@ -106,7 +109,8 @@ export function Dashboard({ profile, log, onAdd, onDelete, onResetProfile }: Pro
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Add food"
-        className="fixed bottom-6 left-1/2 z-40 flex size-16 -translate-x-1/2 items-center justify-center rounded-full bg-(--color-accent) text-3xl font-bold text-black shadow-2xl shadow-black/40 transition active:scale-95"
+        className="fixed left-1/2 z-40 flex size-16 -translate-x-1/2 items-center justify-center rounded-full bg-(--color-accent) text-3xl font-bold text-black shadow-2xl shadow-black/40 transition active:scale-95"
+        style={{ bottom: "calc(env(safe-area-inset-bottom) + 1.5rem)" }}
       >
         +
       </button>

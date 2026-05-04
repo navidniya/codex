@@ -4,11 +4,34 @@ A photo-first calorie tracker. Snap a meal, Claude estimates calories and macros
 
 ## Try it on your phone
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnavidniya%2Fcodex%2Ftree%2Fclaude%2Fcal-ai-clone-X4TuU&env=ANTHROPIC_API_KEY&envDescription=Your%20Anthropic%20API%20key%20%E2%80%94%20or%20leave%20DEMO_MODE%3D1%20to%20skip%20the%20Claude%20call&project-name=cal-ai-clone&repository-name=cal-ai-clone)
+Pick whichever is convenient — all three give you a URL openable on iOS Safari.
 
-One click → Vercel will fork the branch, ask for `ANTHROPIC_API_KEY` (or set `DEMO_MODE=1` to skip Claude), and give you a `*.vercel.app` URL you can open on your phone. Free tier is fine for this.
+### A · GitHub Codespaces (zero local setup)
 
-If you'd rather keep it on your laptop, see `Setup` below — then on the phone (same Wi-Fi) open `http://<your-laptop-ip>:3000`.
+1. On the branch page, click **Code → Codespaces → Create codespace on this branch**.
+2. In the Codespace terminal: `DEMO_MODE=1 npm install && npm run dev` (omit `DEMO_MODE` and add `ANTHROPIC_API_KEY` as a Codespace secret if you want real Claude analysis).
+3. When VS Code prompts to forward port `3000`, choose **Open in Browser** and set the port visibility to **Public**. Use that `*.app.github.dev` URL on your phone.
+
+### B · Vercel from your laptop
+
+```bash
+git clone https://github.com/navidniya/codex
+cd codex
+git checkout claude/cal-ai-clone-X4TuU
+npx vercel deploy --prod
+```
+
+When Vercel prompts for env vars, set either `ANTHROPIC_API_KEY` (for real analysis) or `DEMO_MODE=1` (canned data). You get a `*.vercel.app` URL.
+
+> A "Deploy with Vercel" button isn't included on purpose — Vercel's clone flow ignores branch paths and would deploy the empty `main` instead.
+
+### C · LAN from your laptop
+
+```bash
+DEMO_MODE=1 npm install && npm run dev
+```
+
+Find your laptop's LAN IP (`ipconfig getifaddr en0` on macOS, `hostname -I` on Linux), then on the phone (same Wi-Fi) open `http://<that-ip>:3000`.
 
 ## Stack
 

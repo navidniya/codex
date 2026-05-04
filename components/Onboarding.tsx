@@ -5,8 +5,19 @@ import type { ActivityLevel, Goal, Profile, Sex } from "@/lib/types";
 import { computeTargets } from "@/lib/nutrition";
 
 interface Props {
+  initial?: Profile;
   onComplete: (profile: Profile) => void;
+  onCancel?: () => void;
 }
+
+const DEFAULTS = {
+  sex: "male" as Sex,
+  age: 30,
+  heightCm: 175,
+  weightKg: 75,
+  activity: "moderate" as ActivityLevel,
+  goal: "maintain" as Goal,
+};
 
 const ACTIVITY_OPTIONS: { value: ActivityLevel; label: string; hint: string }[] = [
   { value: "sedentary", label: "Sedentary", hint: "Desk job, little exercise" },
@@ -22,13 +33,15 @@ const GOAL_OPTIONS: { value: Goal; label: string; hint: string }[] = [
   { value: "gain", label: "Gain muscle", hint: "+400 kcal / day" },
 ];
 
-export function Onboarding({ onComplete }: Props) {
-  const [sex, setSex] = useState<Sex>("male");
-  const [age, setAge] = useState(30);
-  const [heightCm, setHeightCm] = useState(175);
-  const [weightKg, setWeightKg] = useState(75);
-  const [activity, setActivity] = useState<ActivityLevel>("moderate");
-  const [goal, setGoal] = useState<Goal>("maintain");
+export function Onboarding({ initial, onComplete, onCancel }: Props) {
+  const [sex, setSex] = useState<Sex>(initial?.sex ?? DEFAULTS.sex);
+  const [age, setAge] = useState(initial?.age ?? DEFAULTS.age);
+  const [heightCm, setHeightCm] = useState(initial?.heightCm ?? DEFAULTS.heightCm);
+  const [weightKg, setWeightKg] = useState(initial?.weightKg ?? DEFAULTS.weightKg);
+  const [activity, setActivity] = useState<ActivityLevel>(
+    initial?.activity ?? DEFAULTS.activity,
+  );
+  const [goal, setGoal] = useState<Goal>(initial?.goal ?? DEFAULTS.goal);
 
   const targets = useMemo(
     () => computeTargets({ sex, age, heightCm, weightKg, activity, goal }),
@@ -41,11 +54,26 @@ export function Onboarding({ onComplete }: Props) {
 
   return (
     <div className="mx-auto flex min-h-svh max-w-md flex-col gap-6 p-6">
-      <header className="flex flex-col gap-2 pt-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Cal AI</h1>
-        <p className="text-(--color-muted)">
-          Snap your food. We&rsquo;ll handle the math.
-        </p>
+      <header className="flex items-start justify-between gap-3 pt-6">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {initial ? "Edit profile" : "Cal AI"}
+          </h1>
+          <p className="text-(--color-muted)">
+            {initial
+              ? "Update your stats to recompute targets."
+              : "Snap your food. We’ll handle the math."}
+          </p>
+        </div>
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-full bg-(--color-surface) px-3 py-2 text-xs text-(--color-muted)"
+          >
+            Cancel
+          </button>
+        )}
       </header>
 
       <section className="flex flex-col gap-4">
@@ -136,7 +164,7 @@ export function Onboarding({ onComplete }: Props) {
         onClick={submit}
         className="mt-auto rounded-xl bg-(--color-accent) py-4 text-base font-semibold text-black transition hover:opacity-90"
       >
-        Start tracking
+        {initial ? "Save changes" : "Start tracking"}
       </button>
     </div>
   );
@@ -170,10 +198,20 @@ function NumberRow({
         min={min}
         max={max}
         onChange={(e) => {
-          const n = Number(e.target.value);
+          const raw = e.target.value;
+          if (raw === "") return; // ignore transient empty state; commit on blur
+          const n = Number(raw);
           if (Number.isFinite(n)) setValue(n);
         }}
-        className="w-20 rounded-lg bg-(--color-surface-2) px-3 py-2 text-right text-sm tabular-nums outline-none focus:ring-2 focus:ring-(--color-accent)/40"
+        onBlur={(e) => {
+          const n = Number(e.target.value);
+          if (!Number.isFinite(n) || e.target.value === "") {
+            setValue(min);
+            return;
+          }
+          setValue(Math.min(max, Math.max(min, Math.round(n))));
+        }}
+        className="w-20 rounded-lg bg-(--color-surface-2) px-3 py-2 text-right tabular-nums outline-none focus:ring-2 focus:ring-(--color-accent)/40"
       />
     </div>
   );

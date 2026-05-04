@@ -9,21 +9,26 @@ export const maxDuration = 60;
 const NutritionSchema = z.object({
   name: z
     .string()
+    .min(1)
+    .max(120)
     .describe("Concise dish/food name, e.g. 'Grilled chicken Caesar salad'"),
   servingDescription: z
     .string()
+    .min(1)
+    .max(120)
     .describe(
       "Visible portion in plain language, e.g. 'about 1 cup' or '2 slices'",
     ),
-  calories: z.number().int().nonnegative(),
-  proteinG: z.number().nonnegative(),
-  carbsG: z.number().nonnegative(),
-  fatG: z.number().nonnegative(),
+  calories: z.number().int().nonnegative().max(5000),
+  proteinG: z.number().nonnegative().max(500),
+  carbsG: z.number().nonnegative().max(800),
+  fatG: z.number().nonnegative().max(500),
   confidence: z
     .enum(["low", "medium", "high"])
     .describe("Confidence in the estimate based on image clarity and recognizability"),
   notes: z
     .string()
+    .max(280)
     .optional()
     .describe("Brief assumptions or caveats, e.g. 'Assumed olive oil dressing'"),
 });

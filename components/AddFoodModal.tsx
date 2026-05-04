@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FoodItem, NutritionAnalysis } from "@/lib/types";
 
 interface Props {
@@ -17,33 +17,73 @@ const JPEG_QUALITY = 0.85;
 async function fileToCompressedJpeg(
   file: File,
 ): Promise<{ dataUrl: string; base64: string; mediaType: string }> {
-  const bitmap = await createImageBitmap(file);
+  // Pass imageOrientation so iPhone portrait JPEGs are rotated based on EXIF.
+  let bitmap: ImageBitmap;
+  try {
+    bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+  } catch {
+    throw new Error(
+      "Couldn't read this image. iPhone HEIC photos aren't supported — switch your camera to JPEG (Settings → Camera → Formats → Most Compatible) or pick a different photo.",
+    );
+  }
+
   const scale = Math.min(1, MAX_DIM / Math.max(bitmap.width, bitmap.height));
-  const w = Math.round(bitmap.width * scale);
-  const h = Math.round(bitmap.height * scale);
+  const w = Math.max(1, Math.round(bitmap.width * scale));
+  const h = Math.max(1, Math.round(bitmap.height * scale));
 
   const canvas = document.createElement("canvas");
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Canvas not supported");
+  if (!ctx) throw new Error("Canvas not supported on this browser.");
   ctx.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close?.();
+
   const dataUrl = canvas.toDataURL("image/jpeg", JPEG_QUALITY);
   const base64 = dataUrl.split(",")[1] ?? "";
+  if (!base64) throw new Error("Image was too large to encode. Try a smaller photo.");
   return { dataUrl, base64, mediaType: "image/jpeg" };
+}
+
+function makeId(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
 export function AddFoodModal({ open, onClose, onSave }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
   const [step, setStep] = useState<Step>("capture");
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [note, setNote] = useState("");
   const [analysis, setAnalysis] = useState<NutritionAnalysis | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // Lock background scroll while the modal is open (iOS rubber-banding).
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (open) {
+      document.documentElement.dataset.modalOpen = "1";
+    } else {
+      delete document.documentElement.dataset.modalOpen;
+    }
+    return () => {
+      delete document.documentElement.dataset.modalOpen;
+    };
+  }, [open]);
+
+  // Cancel any in-flight analyze when the modal unmounts.
+  useEffect(() => {
+    return () => abortRef.current?.abort();
+  }, []);
+
   if (!open) return null;
 
   const reset = () => {
+    abortRef.current?.abort();
+    abortRef.current = null;
     setStep("capture");
     setImageDataUrl(null);
     setNote("");
@@ -58,15 +98,20 @@ export function AddFoodModal({ open, onClose, onSave }: Props) {
   };
 
   const handleFile = async (file: File) => {
+    abortRef.current?.abort();
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
     try {
       setStep("analyzing");
       const { dataUrl, base64, mediaType } = await fileToCompressedJpeg(file);
+      if (ctrl.signal.aborted) return;
       setImageDataUrl(dataUrl);
 
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ imageBase64: base64, mediaType, note }),
+        signal: ctrl.signal,
       });
 
       if (!res.ok) {
@@ -75,9 +120,11 @@ export function AddFoodModal({ open, onClose, onSave }: Props) {
       }
 
       const data = (await res.json()) as NutritionAnalysis;
+      if (ctrl.signal.aborted) return;
       setAnalysis(data);
       setStep("review");
     } catch (err) {
+      if (ctrl.signal.aborted) return;
       setErrorMessage(err instanceof Error ? err.message : "Unknown error");
       setStep("error");
     }
@@ -86,7 +133,7 @@ export function AddFoodModal({ open, onClose, onSave }: Props) {
   const save = () => {
     if (!analysis) return;
     const item: FoodItem = {
-      id: crypto.randomUUID(),
+      id: makeId(),
       loggedAt: new Date().toISOString(),
       name: analysis.name,
       servingDescription: analysis.servingDescription,
@@ -253,7 +300,7 @@ export function AddFoodModal({ open, onClose, onSave }: Props) {
               <button
                 type="button"
                 onClick={save}
-                className="flex-2 flex-1 rounded-xl bg-(--color-accent) py-3 font-semibold text-black"
+                className="flex-[2] rounded-xl bg-(--color-accent) py-3 font-semibold text-black"
               >
                 Save to log
               </button>
