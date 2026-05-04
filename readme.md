@@ -6,11 +6,18 @@ A photo-first calorie tracker. Snap a meal, Claude estimates calories and macros
 
 Pick whichever is convenient — all three give you a URL openable on iOS Safari.
 
-### A · GitHub Codespaces (zero local setup)
+### A · GitHub Codespaces, one click ⚡
 
-1. On the branch page, click **Code → Codespaces → Create codespace on this branch**.
-2. In the Codespace terminal: `DEMO_MODE=1 npm install && npm run dev` (omit `DEMO_MODE` and add `ANTHROPIC_API_KEY` as a Codespace secret if you want real Claude analysis).
-3. When VS Code prompts to forward port `3000`, choose **Open in Browser** and set the port visibility to **Public**. Use that `*.app.github.dev` URL on your phone.
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/navidniya/codex/tree/claude/cal-ai-clone-X4TuU?quickstart=1)
+
+This branch ships with a `.devcontainer` so the Codespace auto-installs deps and auto-starts the dev server in DEMO_MODE. Steps:
+
+1. Click the badge above (or open https://codespaces.new/navidniya/codex/tree/claude/cal-ai-clone-X4TuU?quickstart=1).
+2. Wait ~60 seconds for setup. Trust the workspace when prompted (so the auto-run task can start).
+3. When the **Ports** tab shows port 3000, **right-click it → Port Visibility → Public**.
+4. Click the globe icon next to the port to copy the URL, paste it into Safari on your phone.
+
+> Free Codespaces tier gives you 60 hours/month — plenty for testing. To switch to real Claude: add `ANTHROPIC_API_KEY` as a Codespace secret, edit `.devcontainer/devcontainer.json` to remove `DEMO_MODE`, and rebuild the container.
 
 ### B · Vercel from your laptop
 

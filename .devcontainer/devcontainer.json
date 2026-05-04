@@ -1,0 +1,29 @@
+{
+  "name": "Cal AI Clone",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "containerEnv": {
+    "DEMO_MODE": "1",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "postCreateCommand": "npm install",
+  "postAttachCommand": {
+    "next-steps": "printf '\\n\\033[1;32m✅ Setup complete.\\033[0m\\nDev server is starting on port 3000.\\n\\nWhen you see \"Ready in ...\", do this:\\n  1. Open the \\033[1mPorts\\033[0m tab (next to Terminal)\\n  2. Right-click port \\033[1m3000\\033[0m → Port Visibility → \\033[1mPublic\\033[0m\\n  3. Copy the forwarded URL and open it on your phone.\\n\\nDEMO_MODE is on by default. To use real Claude, set ANTHROPIC_API_KEY\\nas a Codespace secret and remove DEMO_MODE from .devcontainer/devcontainer.json.\\n\\n'"
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Cal AI",
+      "onAutoForward": "openPreview",
+      "visibility": "public"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
