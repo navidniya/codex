@@ -2,6 +2,14 @@
 
 A photo-first calorie tracker. Snap a meal, Claude estimates calories and macros, and a daily ring dashboard tracks you against personalized targets.
 
+## Try it on your phone
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnavidniya%2Fcodex%2Ftree%2Fclaude%2Fcal-ai-clone-X4TuU&env=ANTHROPIC_API_KEY&envDescription=Your%20Anthropic%20API%20key%20%E2%80%94%20or%20leave%20DEMO_MODE%3D1%20to%20skip%20the%20Claude%20call&project-name=cal-ai-clone&repository-name=cal-ai-clone)
+
+One click → Vercel will fork the branch, ask for `ANTHROPIC_API_KEY` (or set `DEMO_MODE=1` to skip Claude), and give you a `*.vercel.app` URL you can open on your phone. Free tier is fine for this.
+
+If you'd rather keep it on your laptop, see `Setup` below — then on the phone (same Wi-Fi) open `http://<your-laptop-ip>:3000`.
+
 ## Stack
 
 - **Next.js 15** (App Router, React 19) + TypeScript
