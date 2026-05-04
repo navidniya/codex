@@ -45,13 +45,6 @@ Given a single food image, identify the dish and estimate its nutrition for the 
 Be decisive — return your single best estimate, not ranges.`;
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json(
-      { error: "ANTHROPIC_API_KEY is not configured." },
-      { status: 500 },
-    );
-  }
-
   let body: { imageBase64?: string; mediaType?: string; note?: string };
   try {
     body = await req.json();
@@ -72,6 +65,26 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { error: `Unsupported media type: ${mediaType}` },
       { status: 400 },
+    );
+  }
+
+  if (process.env.DEMO_MODE === "1") {
+    return NextResponse.json({
+      name: "Demo plate",
+      servingDescription: "about 1 plate",
+      calories: 540,
+      proteinG: 32,
+      carbsG: 58,
+      fatG: 19,
+      confidence: "medium",
+      notes: "DEMO_MODE — set ANTHROPIC_API_KEY and unset DEMO_MODE for real analysis.",
+    });
+  }
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json(
+      { error: "ANTHROPIC_API_KEY is not configured." },
+      { status: 500 },
     );
   }
 

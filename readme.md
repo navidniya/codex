@@ -28,6 +28,16 @@ npm run dev
 
 Then open http://localhost:3000.
 
+### Demo without an API key
+
+To click through the entire flow without calling Claude, run with
+`DEMO_MODE=1`. The `/api/analyze` route will return canned nutrition
+instead of hitting the API:
+
+```bash
+DEMO_MODE=1 npm run dev
+```
+
 ## Project layout
 
 ```
