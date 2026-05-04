@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { AppState, FoodItem, Profile } from "@/lib/types";
-import { loadState, saveState } from "@/lib/storage";
-import { Onboarding } from "@/components/Onboarding";
-import { Dashboard } from "@/components/Dashboard";
+import type { AppState, FoodItem, Profile, WeightEntry } from "@/lib/types";
+import { clearState, loadState, saveState } from "@/lib/storage";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
+import { AppShell } from "@/components/shell/AppShell";
 
-type View = "dashboard" | "edit-profile";
+type View = "main" | "edit-profile";
 
 export default function Home() {
   const [state, setState] = useState<AppState | null>(null);
-  const [view, setView] = useState<View>("dashboard");
+  const [view, setView] = useState<View>("main");
   const hydrated = useRef(false);
 
   useEffect(() => {
@@ -21,27 +21,41 @@ export default function Home() {
     if (!state) return;
     if (!hydrated.current) {
       hydrated.current = true;
-      return; // skip the initial save right after loadState()
+      return;
     }
     saveState(state);
   }, [state]);
 
   if (!state) {
     return (
-      <div className="flex min-h-svh items-center justify-center text-(--color-muted)">
-        Loading…
+      <div className="flex min-h-svh items-center justify-center text-(--color-fg-muted)">
+        <span className="anim-fade text-sm">Loading…</span>
       </div>
     );
   }
 
-  if (!state.profile || view === "edit-profile") {
+  // First-time onboarding
+  if (!state.profile) {
     return (
-      <Onboarding
-        initial={state.profile ?? undefined}
-        onCancel={state.profile ? () => setView("dashboard") : undefined}
+      <OnboardingFlow
+        onComplete={(profile: Profile) =>
+          setState((s) =>
+            s ? { ...s, profile } : { profile, log: [], weights: [] },
+          )
+        }
+      />
+    );
+  }
+
+  // Edit-profile flow re-uses onboarding with the existing profile prefilled
+  if (view === "edit-profile") {
+    return (
+      <OnboardingFlow
+        initial={state.profile}
+        onCancel={() => setView("main")}
         onComplete={(profile: Profile) => {
-          setState((s) => ({ profile, log: s?.log ?? [] }));
-          setView("dashboard");
+          setState((s) => (s ? { ...s, profile } : s));
+          setView("main");
         }}
       />
     );
@@ -55,13 +69,29 @@ export default function Home() {
       s ? { ...s, log: s.log.filter((i) => i.id !== id) } : s,
     );
 
+  const addWeight = (entry: WeightEntry) =>
+    setState((s) => (s ? { ...s, weights: [entry, ...s.weights] } : s));
+
+  const deleteWeight = (id: string) =>
+    setState((s) =>
+      s ? { ...s, weights: s.weights.filter((w) => w.id !== id) } : s,
+    );
+
+  const reset = () => {
+    clearState();
+    setState({ profile: null, log: [], weights: [] });
+    setView("main");
+  };
+
   return (
-    <Dashboard
-      profile={state.profile}
-      log={state.log}
+    <AppShell
+      state={{ ...state, profile: state.profile }}
       onAdd={addItem}
       onDelete={deleteItem}
-      onEditProfile={() => setView("edit-profile")}
+      onAddWeight={addWeight}
+      onDeleteWeight={deleteWeight}
+      onProfileEdit={() => setView("edit-profile")}
+      onReset={reset}
     />
   );
 }

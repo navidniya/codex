@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0b0b0f;
-  --color-surface: #16161d;
-  --color-surface-2: #1f1f29;
-  --color-border: #2a2a36;
-  --color-fg: #f5f5f7;
-  --color-muted: #8a8a96;
-  --color-accent: #b6ff3c;
-  --color-cal: #b6ff3c;
-  --color-protein: #ff6b6b;
+  --color-bg: #faf7f2;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1ece4;
+  --color-elevated: #ffffff;
+  --color-border: #e9e3d8;
+  --color-fg: #1a1a1c;
+  --color-fg-muted: #6b6b73;
+  --color-fg-soft: #8a8a96;
+
+  --color-accent: #ff5a1f;
+  --color-accent-fg: #ffffff;
+
+  --color-cal: #1a1a1c;
+  --color-protein: #ff5a5f;
   --color-carbs: #ffb84d;
-  --color-fat: #6bb8ff;
+  --color-fat: #4d96ff;
+
+  --shadow-card: 0 1px 2px rgba(20, 20, 30, 0.04), 0 8px 24px rgba(20, 20, 30, 0.06);
+  --shadow-fab: 0 6px 18px rgba(255, 90, 31, 0.28), 0 2px 4px rgba(20, 20, 30, 0.06);
+
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-bg: #0d0d10;
+    --color-surface: #16161a;
+    --color-surface-2: #1f1f25;
+    --color-elevated: #1c1c22;
+    --color-border: #2a2a32;
+    --color-fg: #f5f5f7;
+    --color-fg-muted: #a3a3ad;
+    --color-fg-soft: #6b6b73;
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.32);
+    --shadow-fab: 0 6px 24px rgba(255, 90, 31, 0.45), 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
 }
 
 html, body {
   background: var(--color-bg);
   color: var(--color-fg);
   -webkit-font-smoothing: antialiased;
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-sans);
 }
 
 * {
@@ -28,7 +54,7 @@ html, body {
 }
 
 /* iOS Safari zooms inputs whose computed font-size < 16px on focus.
-   Force every form control to >=16px regardless of Tailwind text-sm utilities. */
+   Force every form control to >=16px. */
 input, textarea, select {
   font-size: 16px;
 }
@@ -37,4 +63,58 @@ input, textarea, select {
 html[data-modal-open="1"] body {
   overflow: hidden;
   overscroll-behavior: none;
+}
+
+/* Number input — hide spinner buttons. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] { -moz-appearance: textfield; }
+
+/* Focus ring. */
+button, a, input, textarea, select {
+  outline: none;
+}
+button:focus-visible, a:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+/* Reusable animations. */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes sheetUp {
+  from { transform: translate3d(0, 100%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.65; }
+}
+
+.anim-fade-up { animation: fadeUp 280ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.anim-fade { animation: fadeIn 240ms ease-out both; }
+.anim-sheet { animation: sheetUp 320ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.anim-pulse-dot { animation: pulseDot 1.4s ease-in-out infinite; }
+
+/* Card style. */
+.card {
+  background: var(--color-elevated);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+
+.tap {
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+.tap:active {
+  transform: scale(0.97);
+  opacity: 0.92;
 }

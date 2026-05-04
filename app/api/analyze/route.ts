@@ -25,7 +25,9 @@ const NutritionSchema = z.object({
   fatG: z.number().nonnegative().max(500),
   confidence: z
     .enum(["low", "medium", "high"])
-    .describe("Confidence in the estimate based on image clarity and recognizability"),
+    .describe(
+      "Confidence in the estimate based on image clarity / description specificity",
+    ),
   notes: z
     .string()
     .max(280)
@@ -33,47 +35,85 @@ const NutritionSchema = z.object({
     .describe("Brief assumptions or caveats, e.g. 'Assumed olive oil dressing'"),
 });
 
-const SYSTEM_PROMPT = `You are a nutrition analyst that estimates calories and macronutrients from food photos.
+const SYSTEM_PROMPT = `You are a nutrition analyst that estimates calories and macronutrients from a food photo OR a written description.
 
-Given a single food image, identify the dish and estimate its nutrition for the visible portion. Follow these rules:
+Identify the dish (or combination of dishes on the plate) and estimate its nutrition for the visible portion. Rules:
 
-1. Identify the most likely dish or combination of foods. If multiple items are on the plate, treat the whole plate as one entry and combine their macros.
-2. Estimate the visible portion size from visual cues (plate diameter ~25cm, utensil sizes, etc.). Be realistic — don't assume restaurant-large or diet-tiny portions without evidence.
-3. Provide whole-number calories. Macros (protein/carbs/fat) may include one decimal.
-4. Use confidence:
-   - "high": clearly recognizable single dish with predictable preparation (e.g. plain grilled chicken breast)
-   - "medium": recognizable but with hidden variables (sauces, oils, breading)
-   - "low": ambiguous, mixed, or partially obscured
-5. Macros must be self-consistent with calories: protein*4 + carbs*4 + fat*9 should be within ~15% of the calorie value.
-6. If the image clearly does not contain food, return calories: 0, all macros 0, confidence: "low", and explain in notes.
+1. Treat the whole plate as one entry; combine items if there are multiple.
+2. Estimate the portion size from visual cues (plate ~25cm, utensil sizes) when given an image, or from typical serving sizes when given text.
+3. Whole-number calories. Macros (protein/carbs/fat) may include one decimal.
+4. Confidence:
+   - "high": clearly recognizable single dish with predictable preparation
+   - "medium": recognizable but with hidden variables (sauces, oils, breading, vague portion)
+   - "low": ambiguous, mixed, partially obscured, or only loosely described
+5. Macros must be self-consistent: protein*4 + carbs*4 + fat*9 should be within ~15% of the calorie value.
+6. If the input clearly does not refer to food, return calories: 0 with all macros 0, confidence: "low", and explain in notes.
 
 Be decisive — return your single best estimate, not ranges.`;
 
+type Body =
+  | { imageBase64: string; mediaType: string; note?: string; text?: never }
+  | { text: string; imageBase64?: never; mediaType?: never; note?: never };
+
+function isImageBody(b: unknown): b is Extract<Body, { imageBase64: string }> {
+  return (
+    typeof b === "object" &&
+    b !== null &&
+    typeof (b as { imageBase64?: unknown }).imageBase64 === "string" &&
+    typeof (b as { mediaType?: unknown }).mediaType === "string"
+  );
+}
+function isTextBody(b: unknown): b is Extract<Body, { text: string }> {
+  return (
+    typeof b === "object" &&
+    b !== null &&
+    typeof (b as { text?: unknown }).text === "string" &&
+    !(b as { imageBase64?: unknown }).imageBase64
+  );
+}
+
 export async function POST(req: Request) {
-  let body: { imageBase64?: string; mediaType?: string; note?: string };
+  let raw: unknown;
   try {
-    body = await req.json();
+    raw = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const { imageBase64, mediaType, note } = body;
-  if (!imageBase64 || !mediaType) {
+  const imgBody = isImageBody(raw) ? raw : null;
+  const txtBody = !imgBody && isTextBody(raw) ? raw : null;
+
+  if (!imgBody && !txtBody) {
     return NextResponse.json(
-      { error: "imageBase64 and mediaType are required." },
+      { error: "Provide either {imageBase64, mediaType} or {text}." },
       { status: 400 },
     );
   }
 
-  const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-  if (!allowed.includes(mediaType)) {
-    return NextResponse.json(
-      { error: `Unsupported media type: ${mediaType}` },
-      { status: 400 },
-    );
+  if (imgBody) {
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowed.includes(imgBody.mediaType)) {
+      return NextResponse.json(
+        { error: `Unsupported media type: ${imgBody.mediaType}` },
+        { status: 400 },
+      );
+    }
   }
 
   if (process.env.DEMO_MODE === "1") {
+    if (txtBody) {
+      return NextResponse.json({
+        name: txtBody.text.slice(0, 60) || "Demo meal",
+        servingDescription: "1 serving",
+        calories: 420,
+        proteinG: 24,
+        carbsG: 48,
+        fatG: 14,
+        confidence: "medium" as const,
+        notes:
+          "DEMO_MODE — set ANTHROPIC_API_KEY and unset DEMO_MODE for real analysis.",
+      });
+    }
     return NextResponse.json({
       name: "Demo plate",
       servingDescription: "about 1 plate",
@@ -81,8 +121,9 @@ export async function POST(req: Request) {
       proteinG: 32,
       carbsG: 58,
       fatG: 19,
-      confidence: "medium",
-      notes: "DEMO_MODE — set ANTHROPIC_API_KEY and unset DEMO_MODE for real analysis.",
+      confidence: "medium" as const,
+      notes:
+        "DEMO_MODE — set ANTHROPIC_API_KEY and unset DEMO_MODE for real analysis.",
     });
   }
 
@@ -95,9 +136,37 @@ export async function POST(req: Request) {
 
   const client = new Anthropic();
 
-  const userText = note?.trim()
-    ? `Analyze this food. The user adds context: "${note.trim()}"`
-    : "Analyze this food and return its nutrition.";
+  type Block =
+    | { type: "image"; source: { type: "base64"; media_type: "image/jpeg" | "image/png" | "image/webp" | "image/gif"; data: string } }
+    | { type: "text"; text: string };
+
+  const userContent: Block[] = imgBody
+    ? [
+        {
+          type: "image",
+          source: {
+            type: "base64",
+            media_type: imgBody.mediaType as
+              | "image/jpeg"
+              | "image/png"
+              | "image/webp"
+              | "image/gif",
+            data: imgBody.imageBase64,
+          },
+        },
+        {
+          type: "text",
+          text: imgBody.note?.trim()
+            ? `Analyze this food. The user adds context: "${imgBody.note.trim().replace(/"/g, '\\"')}"`
+            : "Analyze this food and return its nutrition.",
+        },
+      ]
+    : [
+        {
+          type: "text",
+          text: `Estimate the nutrition for this meal description: "${txtBody!.text.replace(/"/g, '\\"')}"`,
+        },
+      ];
 
   try {
     const response = await client.messages.parse({
@@ -111,26 +180,7 @@ export async function POST(req: Request) {
         },
       ],
       output_config: { format: zodOutputFormat(NutritionSchema) },
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "image",
-              source: {
-                type: "base64",
-                media_type: mediaType as
-                  | "image/jpeg"
-                  | "image/png"
-                  | "image/webp"
-                  | "image/gif",
-                data: imageBase64,
-              },
-            },
-            { type: "text", text: userText },
-          ],
-        },
-      ],
+      messages: [{ role: "user", content: userContent }],
     });
 
     if (!response.parsed_output) {
@@ -139,7 +189,6 @@ export async function POST(req: Request) {
         { status: 502 },
       );
     }
-
     return NextResponse.json(response.parsed_output);
   } catch (error) {
     if (error instanceof Anthropic.APIError) {
@@ -148,7 +197,9 @@ export async function POST(req: Request) {
         { status: error.status ?? 500 },
       );
     }
-    const message = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 },
+    );
   }
 }
