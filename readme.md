@@ -1,6 +1,6 @@
 # Cal AI Clone
 
-A photo-first calorie tracker. Snap a meal, Claude estimates calories and macros, and a daily ring dashboard tracks you against personalized targets.
+A photo-first calorie tracker. Snap a meal, an LLM (via [Liara AI](https://console.liara.ir/ai)) estimates calories and macros, and a daily ring dashboard tracks you against personalized targets.
 
 ## Try it on your phone
 
@@ -17,7 +17,7 @@ This branch ships with a `.devcontainer` so the Codespace auto-installs deps and
 3. When the **Ports** tab shows port 3000, **right-click it → Port Visibility → Public**.
 4. Click the globe icon next to the port to copy the URL, paste it into Safari on your phone.
 
-> Free Codespaces tier gives you 60 hours/month — plenty for testing. To switch to real Claude: add `ANTHROPIC_API_KEY` as a Codespace secret, edit `.devcontainer/devcontainer.json` to remove `DEMO_MODE`, and rebuild the container.
+> Free Codespaces tier gives you 60 hours/month — plenty for testing. To switch to real Claude: add `LIARA_API_KEY` as a Codespace secret, edit `.devcontainer/devcontainer.json` to remove `DEMO_MODE`, and rebuild the container.
 
 ### B · Vercel from your laptop
 
@@ -28,7 +28,7 @@ git checkout claude/cal-ai-clone-X4TuU
 npx vercel deploy --prod
 ```
 
-When Vercel prompts for env vars, set either `ANTHROPIC_API_KEY` (for real analysis) or `DEMO_MODE=1` (canned data). You get a `*.vercel.app` URL.
+When Vercel prompts for env vars, set either `LIARA_API_KEY` (for real analysis) or `DEMO_MODE=1` (canned data). You get a `*.vercel.app` URL.
 
 > A "Deploy with Vercel" button isn't included on purpose — Vercel's clone flow ignores branch paths and would deploy the empty `main` instead.
 
@@ -44,21 +44,30 @@ Find your laptop's LAN IP (`ipconfig getifaddr en0` on macOS, `hostname -I` on L
 
 - **Next.js 15** (App Router, React 19) + TypeScript
 - **Tailwind CSS 4** for the UI
-- **Claude Opus 4.7** with vision + structured outputs for the food analysis
+- **Liara AI** (OpenAI-compatible) for vision + nutrition extraction
 - **localStorage** for state — no database
 
 ## How it works
 
-1. **Onboarding** — sex, age, height, weight, activity level, and goal feed a Mifflin-St Jeor BMR → TDEE calculation. Targets are split 30/40/30 protein/carbs/fat.
-2. **Snap** — the user takes a photo. The browser compresses it to ≤1280px JPEG and POSTs base64 to `/api/analyze`.
-3. **Analyze** — the route calls `client.messages.parse()` against `claude-opus-4-7` with a Zod schema describing `{name, servingDescription, calories, proteinG, carbsG, fatG, confidence, notes}`. The system prompt is marked `cache_control: ephemeral` so future expansions cache for free.
-4. **Review** — the user can tweak any field before saving. Saved meals land in localStorage and roll up into the daily rings.
+1. **Onboarding** — sex, DOB, height, weight, workouts/week, goal, pace, diet → Mifflin–St Jeor BMR → TDEE → daily calorie target with goal-aware macro split.
+2. **Snap / Describe / Quick add** — user logs a meal via camera, gallery, written description, or manual entry.
+3. **Analyze** — `/api/analyze` POSTs an OpenAI-compatible chat completion to Liara AI. The route asks the model to return strict JSON, then validates it with Zod (`{name, servingDescription, calories, proteinG, carbsG, fatG, confidence, notes}`).
+4. **Review** — the user can tweak any field before saving. Saved meals land in localStorage and roll up into the daily rings, weekly bars, and weight chart.
+
+## Environment
+
+| Variable | Purpose | Default |
+|---|---|---|
+| `LIARA_API_KEY` | Bearer token from your Liara AI console. Required unless `DEMO_MODE=1`. | — |
+| `LIARA_BASE_URL` | OpenAI-compatible base URL for the chat endpoint. | `https://ai.liara.ir/api/v1` |
+| `LIARA_MODEL` | Model id. Use a vision-capable model so photos work. | `openai/gpt-4o-mini` |
+| `DEMO_MODE` | Set to `1` to bypass the AI call and return canned nutrition. | unset |
 
 ## Setup
 
 ```bash
 cp .env.example .env.local
-# add your ANTHROPIC_API_KEY
+# add your LIARA_API_KEY
 
 npm install
 npm run dev

@@ -7,7 +7,7 @@
   },
   "postCreateCommand": "npm install",
   "postAttachCommand": {
-    "next-steps": "printf '\\n\\033[1;32m✅ Setup complete.\\033[0m\\nDev server is starting on port 3000.\\n\\nWhen you see \"Ready in ...\", do this:\\n  1. Open the \\033[1mPorts\\033[0m tab (next to Terminal)\\n  2. Right-click port \\033[1m3000\\033[0m → Port Visibility → \\033[1mPublic\\033[0m\\n  3. Copy the forwarded URL and open it on your phone.\\n\\nDEMO_MODE is on by default. To use real Claude, set ANTHROPIC_API_KEY\\nas a Codespace secret and remove DEMO_MODE from .devcontainer/devcontainer.json.\\n\\n'"
+    "next-steps": "printf '\\n\\033[1;32m✅ Setup complete.\\033[0m\\nDev server is starting on port 3000.\\n\\nWhen you see \"Ready in ...\", do this:\\n  1. Open the \\033[1mPorts\\033[0m tab (next to Terminal)\\n  2. Right-click port \\033[1m3000\\033[0m → Port Visibility → \\033[1mPublic\\033[0m\\n  3. Copy the forwarded URL and open it on your phone.\\n\\nDEMO_MODE is on by default. To use real Liara AI:\\n  - Add LIARA_API_KEY as a Codespace secret\\n    (Settings -> Codespaces -> repository secrets)\\n  - Remove DEMO_MODE from .devcontainer/devcontainer.json (or unset in shell)\\n  - Optionally set LIARA_MODEL (default: openai/gpt-4o-mini)\\n\\n'"
   },
   "forwardPorts": [3000],
   "portsAttributes": {
